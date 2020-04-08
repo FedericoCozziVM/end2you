@@ -18,8 +18,9 @@ from end2you.tfrecord_generator.generate_multimodal import MultimodalGenerator
 from end2you.parser import *
 from pathlib import Path
 
-slim = tf.contrib.slim
+slim = tf.contrib.slim #deprecated
 
+# ARGUMENT PARSER
 
 parser = argparse.ArgumentParser(description='End2You flags.')
 
@@ -49,20 +50,21 @@ parser.add_argument('--delimiter', type=str, default='\t',
                     help='The delimiter to use to read the files. (default \t)')
 
 testing_subparser = subparsers.add_parser('test', help='Test arguments.')
-testing_subparser = add_test_args(testing_subparser)
+testing_subparser = add_test_args(testing_subparser) # function in parser.py
 
 generation_subparser = subparsers.add_parser('generate', help='Generation arguments.')
-generation_subparser = add_gen_args(generation_subparser)
+generation_subparser = add_gen_args(generation_subparser) # function in parser.py
 
 training_subparser = subparsers.add_parser('train', help='Training argument options.')
-training_subparser = add_train_args(training_subparser)
+training_subparser = add_train_args(training_subparser) # function in parser.py
 
 evaluation_subparser = subparsers.add_parser('evaluate', help='Evaluation argument options.')
-evaluation_subparser = add_eval_args(evaluation_subparser)
+evaluation_subparser = add_eval_args(evaluation_subparser) # function in parser.py
 
 class End2You:
     
     def __init__(self, *args, **kwargs):
+        # the '**' operator permits to pass keyworded values (kwargs)
         self.kwargs = kwargs
     
     def _reshape_to_rnn(self, frames):
@@ -121,8 +123,8 @@ class End2You:
         predictions = self.get_model
         
         if 'generate' in self.kwargs['which'].lower():
-            generator_params = self._get_gen_params()
-            g = UnimodalGenerator(**generator_params)
+            generator_params = self._get_gen_params() # get the input generator params and a set FileReader
+            g = UnimodalGenerator(**generator_params) # from end2you/tfrecord_generator/generate_unimodal.py
             g.write_tfrecords(self.kwargs['tfrecords_folder'])
             return
         elif 'test' in self.kwargs['which'].lower():
@@ -195,7 +197,7 @@ class End2You:
     
     def _get_gen_params(self):
         generator_params = {}
-        file_reader = FileReader(self.kwargs['data_file'], delimiter=self.kwargs['delimiter'])
+        file_reader = FileReader(self.kwargs['data_file'], delimiter=self.kwargs['delimiter']) #FileReader is a custom class in file_reader.py
         generator_params['input_type'] = self.kwargs['input_type']
         generator_params['reader'] = file_reader
         generator_params['upsample'] = self.kwargs['upsample']
@@ -229,7 +231,7 @@ def main(flags=None):
 
     if flags == None:
         flags=sys.argv[1:]
-    flags = vars(parser.parse_args(flags))
+    flags = vars(parser.parse_args(flags)) # The vars() function returns the __dict__ attribute of the given object.
 
     with tf.Graph().as_default():
         e2u = End2You(**flags)

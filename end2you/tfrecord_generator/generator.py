@@ -23,7 +23,7 @@ class Generator(metaclass=ABCMeta):
                  upsample:bool = True,
                  delimiter:str = ';'):
         
-        self.input_type = self._get_input_type(input_type.lower())
+        self.input_type = self._get_input_type(input_type.lower()) # checks the input type correctness (video, audio, audiovisual)
         
         self.attributes_name, self.attributes_type, self.data = \
                                                             reader.read()
