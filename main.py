@@ -124,6 +124,8 @@ class End2You:
         
         if 'generate' in self.kwargs['which'].lower():
             generator_params = self._get_gen_params() # get the input generator params and a set FileReader
+            print("111111111")
+            print(generator_params)
             g = UnimodalGenerator(**generator_params) # from end2you/tfrecord_generator/generate_unimodal.py
             g.write_tfrecords(self.kwargs['tfrecords_folder'])
             return

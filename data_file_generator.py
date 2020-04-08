@@ -47,7 +47,7 @@ for path in sorted_listArousal:
 				valence.append((float(row[1]) + float(row[2]) + float(row[3]) + float(row[4]) + float(row[5]) + float(row[6]))/6.0)
 
 	with open(os.path.join(dirLabels, path ), mode = 'w') as label_file:
-		data_writer = csv.writer(label_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+		data_writer = csv.writer(label_file, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
 		data_writer.writerow(['time', 'arousal', 'valence'])
 
@@ -59,9 +59,9 @@ for path in sorted_listArousal:
 sorted_listLabels = sorted(os.listdir(dirLabels))
 
 with open('data_file.csv', mode='w') as data_file:
-	data_writer = csv.writer(data_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+	data_writer = csv.writer(data_file, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-	data_writer.writerow(['file', 'labels'])
+	data_writer.writerow(['file', 'label'])
 
 	#print(len(sorted_listAudio))
 	for path in sorted_listAudio:

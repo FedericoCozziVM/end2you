@@ -21,13 +21,13 @@ class Generator(metaclass=ABCMeta):
                  reader: FileReader,
                  input_type:str,
                  upsample:bool = True,
-                 delimiter:str = ';'):
+                 delimiter:str = '\t'):
         
         self.input_type = self._get_input_type(input_type.lower()) # checks the input type correctness (video, audio, audiovisual)
         
-        self.attributes_name, self.attributes_type, self.data = \
-                                                            reader.read()
-        
+        self.attributes_name, self.attributes_type, self.data = reader.read()
+        #print(self.attributes_name, self.attributes_type, self.data)
+
         label_idx = self.attributes_name.index('label')
         file_idx = self.attributes_name.index('file')
         label_type = self.attributes_type[label_idx]
@@ -35,6 +35,8 @@ class Generator(metaclass=ABCMeta):
         kwargs = {}
         if label_type == 'str':
             read_label_file = FileReader.read_delimiter_file
+            print("[READ_LABEL_FILE] :")
+            print(read_label_file)
             kwargs['delimiter'] = delimiter
         else:
             read_label_file = self._read_single_label
